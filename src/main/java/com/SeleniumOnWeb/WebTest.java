@@ -3,16 +3,8 @@ package com.SeleniumOnWeb;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import javax.lang.model.element.Element;
-import javax.swing.*;
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
 
 
 public class WebTest {
@@ -32,23 +24,23 @@ public class WebTest {
 		driver.findElement(By.id("um-submit-btn")).click();
 		Thread.sleep(2000);
 		click_id("menu-item-25");
+		String handle = driver.getWindowHandle();
+		System.out.println(handle);
+//		driver.close();
 		Thread.sleep(2000);
-		driver.get("https://iwarship.net/wowsdb/index");
+//		driver.get("https://iwarship.net/wowsdb/index");
 //		System.out.println(driver.findElement(By.xpath("/html/body/div/div[2]/div/div/span[2]/div/button")));
-		Actions action = new Actions(driver);
-		WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(10));
-		WebElement ele = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div/div[2]/div/div/span[2]/div/button")));
-		action.moveToElement(ele);
-//		click_xpath("/html/body/div/div[2]/div/div/span[2]/div/button");
-		ele.click();
+//		click_xpath("//*[@id=\"menu-item-25\"]");
+		driver.switchTo().window(change(handle));
+		click_xpath("/html/body/div/div[2]/div/div/span[2]/div/button/div/div/div");
 //		click_id("ship-select");
-		Thread.sleep(3000);
+		Thread.sleep(2000);
 		driver.findElement(By.xpath("/html/body/div/div[2]/div/div/span[2]/div/div/div[1]/input")).sendKeys("布林迪西");
-		Thread.sleep(3000);
+		Thread.sleep(2000);
 		driver.findElement(By.xpath("/html/body/div/div[2]/div/div/span[2]/div/div/div[1]/input")).sendKeys(Keys.ENTER);
 		click_xpath("//*[@id=\"table-hull-toolbar\"]/div[1]/button[1]");
 		click_xpath("//*[@id=\"btn-table-hull-model-tonnage\"]");
-		Thread.sleep(10000);
+		Thread.sleep(20000);
 		driver.close();
 	}
 	public static void click_xpath(String path) throws Exception {
@@ -58,5 +50,14 @@ public class WebTest {
 	public static void click_id(String id) throws InterruptedException {
 		driver.findElement(By.id(id)).click();
 		Thread.sleep(1000);
+	}
+	public static String change(String handle)throws Exception{
+		Set<String>se = driver.getWindowHandles();
+		for(String str:se){
+			if (!str.equals(handle)){
+				return str;
+			}
+		}
+		return null;
 	}
 }
